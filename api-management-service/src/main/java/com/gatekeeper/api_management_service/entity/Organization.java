@@ -1,5 +1,8 @@
 package com.gatekeeper.api_management_service.entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,4 +36,8 @@ public class Organization {
 
     @Enumerated(EnumType.STRING)
     private OrganizationStatus status;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }
