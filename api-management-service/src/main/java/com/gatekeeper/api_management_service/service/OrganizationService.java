@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gatekeeper.api_management_service.dto.requestDto.TenantAdminRequest;
+import com.gatekeeper.api_management_service.dto.requestDto.TenantOrganizationRequest;
 import com.gatekeeper.api_management_service.dto.requestDto.OrganizationRequest;
 import com.gatekeeper.api_management_service.dto.responseDto.TenantAdminResponse;
 import com.gatekeeper.api_management_service.dto.responseDto.OrganizationResponse;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service 
 public class OrganizationService {
 
+    private final TenantContext tenantContext;
     private OrganizationRepository organizationRepository;
     private ManagementUserRepository managementUserRepository;
     private RoleRepository roleRepository;
@@ -32,11 +34,12 @@ public class OrganizationService {
     public OrganizationService(OrganizationRepository organizationRepository,
                                ManagementUserRepository managementUserRepository,
                                RoleRepository roleRepository,
-                               PasswordEncoder passwordEncoder) {
+                               PasswordEncoder passwordEncoder, TenantContext tenantContext) {
                                  this.organizationRepository = organizationRepository;
                                  this.managementUserRepository = managementUserRepository;
                                  this.roleRepository = roleRepository;
                                  this.passwordEncoder = passwordEncoder;
+                                 this.tenantContext = tenantContext;
                                }
 
     @Transactional
@@ -67,7 +70,7 @@ public class OrganizationService {
 
     @Transactional (readOnly = true)
     public OrganizationResponse getOrganizationById(int id) {
-        Organization organization = organizationRepository.findById(id);
+        Organization organization = getOrganization(id);
         return OrganizationResponse.fromEntity(organization);
     }
 
@@ -86,7 +89,7 @@ public class OrganizationService {
 
     @Transactional
     public OrganizationResponse updateOrganizationStatus(int id, OrganizationRequest organizationRequest) {
-        Organization organization = organizationRepository.findById(id);
+        Organization organization = getOrganization(id);
         if (organization == null) {
             return null;
         }
@@ -103,7 +106,7 @@ public class OrganizationService {
 
     @Transactional
     public OrganizationResponse deleteOrganization(int id) {
-        Organization organization = organizationRepository.findById(id);
+        Organization organization = getOrganization(id);
         if (organization == null) {
             return null;
         }
@@ -117,7 +120,7 @@ public class OrganizationService {
     
     @Transactional 
     public TenantAdminResponse createTenantAdmin(TenantAdminRequest request, int organizationId) {
-        Organization organization = organizationRepository.findById(organizationId);
+        Organization organization = getOrganization(organizationId);
         
         if(managementUserRepository.findByOrganizationId(organizationId).isPresent()) {
             throw new ApiException("This organization already has a tenant administrator");
@@ -166,6 +169,24 @@ public class OrganizationService {
         tenantAdmin.setUpdatedAt(LocalDateTime.now());
         
         return TenantAdminResponse.fromEntity(tenantAdmin);
+    }
+
+    @Transactional(readOnly = true)
+    public OrganizationResponse getOwnOrganization() {
+        Organization organization = tenantContext.getOrganization();
+        return OrganizationResponse.fromEntity(organization);
+    }
+
+    @Transactional 
+    public OrganizationResponse updateOrganization(TenantOrganizationRequest request) {
+        Organization organization = tenantContext.getOrganization();
+
+        checkUnique(request.getName(), organization.getSlug(), organization.getId());
+
+        organization.setName(request.getName());
+        organization.setUpdatedAt(LocalDateTime.now());
+        organizationRepository.save(organization);
+        return OrganizationResponse.fromEntity(organization);
     }
 
     private ManagementUser getTenantAdminEntity(int organizationId) {

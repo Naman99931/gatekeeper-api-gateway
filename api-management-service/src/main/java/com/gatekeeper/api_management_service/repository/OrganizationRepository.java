@@ -11,8 +11,6 @@ import com.gatekeeper.api_management_service.entity.OrganizationStatus;
 public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
     Organization findBySlug(String slug);
 
-    Organization findById(int id);
-
     List<Organization> findAllByStatusNot(OrganizationStatus status);
 
     Optional<Organization> findByIdAndStatusNot(int id, OrganizationStatus deleted);
