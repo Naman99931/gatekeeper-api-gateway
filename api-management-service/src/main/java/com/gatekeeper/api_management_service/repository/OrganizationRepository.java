@@ -1,6 +1,7 @@
 package com.gatekeeper.api_management_service.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +14,10 @@ public interface OrganizationRepository extends JpaRepository<Organization, Inte
     Organization findById(int id);
 
     List<Organization> findAllByStatusNot(OrganizationStatus status);
+
+    Optional<Organization> findByIdAndStatusNot(int id, OrganizationStatus deleted);
+
+    boolean existsByNameIgnoreCase(String name);
+
+    boolean existsBySlugIgnoreCase(String slug);
 }

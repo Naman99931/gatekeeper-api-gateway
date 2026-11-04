@@ -1,6 +1,5 @@
 package com.gatekeeper.api_management_service.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
