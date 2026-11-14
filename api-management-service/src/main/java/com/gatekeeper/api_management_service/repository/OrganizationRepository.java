@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.gatekeeper.api_management_service.entity.Organization;
 import com.gatekeeper.api_management_service.entity.OrganizationStatus;
 
-public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
+public interface OrganizationRepository extends JpaRepository<Organization, Long> {
     Organization findBySlug(String slug);
 
     List<Organization> findAllByStatusNot(OrganizationStatus status);
 
-    Optional<Organization> findByIdAndStatusNot(int id, OrganizationStatus deleted);
+    Optional<Organization> findByIdAndStatusNot(Long id, OrganizationStatus deleted);
 
     boolean existsByNameIgnoreCase(String name);
 

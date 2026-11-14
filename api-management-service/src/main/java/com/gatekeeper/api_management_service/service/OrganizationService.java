@@ -69,13 +69,13 @@ public class OrganizationService {
     }
 
     @Transactional (readOnly = true)
-    public OrganizationResponse getOrganizationById(int id) {
+    public OrganizationResponse getOrganizationById(Long id) {
         Organization organization = getOrganization(id);
         return OrganizationResponse.fromEntity(organization);
     }
 
     @Transactional
-    public OrganizationResponse updateOrganization(int id, OrganizationRequest organizationRequest) {
+    public OrganizationResponse updateOrganization(Long id, OrganizationRequest organizationRequest) {
         Organization organization = getOrganization(id);
 
         checkUnique(organizationRequest.getName(), organizationRequest.getSlug(), id);
@@ -88,7 +88,7 @@ public class OrganizationService {
     }
 
     @Transactional
-    public OrganizationResponse updateOrganizationStatus(int id, OrganizationRequest organizationRequest) {
+    public OrganizationResponse updateOrganizationStatus(Long id, OrganizationRequest organizationRequest) {
         Organization organization = getOrganization(id);
         if (organization == null) {
             return null;
@@ -105,7 +105,7 @@ public class OrganizationService {
     }
 
     @Transactional
-    public OrganizationResponse deleteOrganization(int id) {
+    public OrganizationResponse deleteOrganization(Long id) {
         Organization organization = getOrganization(id);
         if (organization == null) {
             return null;
@@ -119,7 +119,7 @@ public class OrganizationService {
     // TenantAdmin Endpoints
     
     @Transactional 
-    public TenantAdminResponse createTenantAdmin(TenantAdminRequest request, int organizationId) {
+    public TenantAdminResponse createTenantAdmin(TenantAdminRequest request, Long organizationId) {
         Organization organization = getOrganization(organizationId);
         
         if(managementUserRepository.findByOrganizationId(organizationId).isPresent()) {
@@ -148,14 +148,14 @@ public class OrganizationService {
     }
 
     @Transactional(readOnly = true)
-    public TenantAdminResponse getTenantAdmin(int tenantAdminId) {
+    public TenantAdminResponse getTenantAdmin(Long tenantAdminId) {
         ManagementUser tenantAdmin = managementUserRepository.findById(tenantAdminId)
                 .orElseThrow(() -> new ApiException("Tenant administrator not found for the given ID"));
         return TenantAdminResponse.fromEntity(tenantAdmin);
     }
 
     @Transactional
-    public TenantAdminResponse updateTenantAdmin(int organizationId, TenantAdminRequest request) {
+    public TenantAdminResponse updateTenantAdmin(Long organizationId, TenantAdminRequest request) {
         ManagementUser tenantAdmin = getTenantAdminEntity(organizationId);
 
         if(!tenantAdmin.getUsername().equals(request.getUsername())
@@ -189,18 +189,18 @@ public class OrganizationService {
         return OrganizationResponse.fromEntity(organization);
     }
 
-    private ManagementUser getTenantAdminEntity(int organizationId) {
+    private ManagementUser getTenantAdminEntity(Long organizationId) {
         getOrganization(organizationId);
         return managementUserRepository.findByOrganizationId(organizationId)
                 .orElseThrow(() -> new ApiException("Tenant administrator not found"));
     }
 
-    private Organization getOrganization(int id) {
+    private Organization getOrganization(Long id) {
         return organizationRepository.findByIdAndStatusNot(id, OrganizationStatus.DELETED)
                 .orElseThrow(() -> new ApiException("Organization not found"));
     }
 
-    private void checkUnique(String name, String slug, Integer currentId) {
+    private void checkUnique(String name, String slug, Long currentId) {
         if(organizationRepository.existsByNameIgnoreCase(name)) {
             Organization current = currentId == null ?
                     null : organizationRepository.findById(currentId).orElse(null);

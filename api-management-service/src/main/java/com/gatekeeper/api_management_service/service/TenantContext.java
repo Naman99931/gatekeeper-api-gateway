@@ -32,7 +32,7 @@ public class TenantContext {
       throw new ApiException(HttpStatus.FORBIDDEN, "Tenant identity is missing"); 
     }
 
-    Organization organization = organizationRepository.findById(organizationId.intValue()).orElse(null);
+    Organization organization = organizationRepository.findById(organizationId).orElse(null);
     if(organization == null) {
       throw new ApiException(HttpStatus.FORBIDDEN, "Invalid tenant identity"); 
     }

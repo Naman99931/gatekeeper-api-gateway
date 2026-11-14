@@ -8,7 +8,7 @@ import com.gatekeeper.api_management_service.entity.ManagementUser;
 
 public interface ManagementUserRepository extends JpaRepository<ManagementUser, Integer> {
     Optional<ManagementUser> findByUsername(String username);
-    Optional<ManagementUser> findById(int id);
-    Optional<ManagementUser> findByOrganizationId(int organizationId);
+    Optional<ManagementUser> findById(Long tenantAdminId);
+    Optional<ManagementUser> findByOrganizationId(Long organizationId);
     boolean existsByUsername(String username);
 }

@@ -46,7 +46,7 @@ public class OrganizationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrganizationResponse> getOrganizationById(@PathVariable int id) {
+    public ResponseEntity<OrganizationResponse> getOrganizationById(@PathVariable Long id) {
         OrganizationResponse organization = organizationService.getOrganizationById(id);
         if (organization == null) {
             return ResponseEntity.notFound().build();
@@ -55,36 +55,36 @@ public class OrganizationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrganizationResponse> updateOrganization(@PathVariable int id, @Valid @RequestBody OrganizationRequest organizationRequest) {
+    public ResponseEntity<OrganizationResponse> updateOrganization(@PathVariable Long id, @Valid @RequestBody OrganizationRequest organizationRequest) {
         return ResponseEntity.ok(organizationService.updateOrganization(id, organizationRequest));
     }
 
     @PatchMapping ("/{id}/status")
-    public ResponseEntity<OrganizationResponse> updateOrganizationStatus(@PathVariable int id, @Valid @RequestBody OrganizationRequest organizationRequest) {
+    public ResponseEntity<OrganizationResponse> updateOrganizationStatus(@PathVariable Long id, @Valid @RequestBody OrganizationRequest organizationRequest) {
         return ResponseEntity.ok(organizationService.updateOrganizationStatus(id, organizationRequest));
     }
 
     @DeleteMapping ("/{id}")
-    public ResponseEntity<Void> deleteOrganization(@PathVariable int id) {
+    public ResponseEntity<Void> deleteOrganization(@PathVariable Long id) {
         organizationService.deleteOrganization(id);
         return ResponseEntity.noContent().build();
     }
 
     // Tenant creation endpoint
     @PostMapping("/createTenant")
-    public ResponseEntity<TenantAdminResponse> CreateTenantAdmin(@RequestBody TenantAdminRequest request, @Valid @RequestParam int organizationId) {
+    public ResponseEntity<TenantAdminResponse> CreateTenantAdmin(@RequestBody TenantAdminRequest request, @Valid @RequestParam Long organizationId) {
         TenantAdminResponse response = organizationService.createTenantAdmin(request, organizationId);
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/getTenant/{id}")
-    public ResponseEntity<TenantAdminResponse> getTenantAdmin(@PathVariable int id) {
+    public ResponseEntity<TenantAdminResponse> getTenantAdmin(@PathVariable Long id) {
         TenantAdminResponse response = organizationService.getTenantAdmin(id);
         return ResponseEntity.ok().body(response);
     }
     
     @PutMapping("/updateTenant/{id}")
-    public ResponseEntity<TenantAdminResponse> updateTenantAdmin(@PathVariable int id, @Valid @RequestBody TenantAdminRequest tenantAdminRequest) {
+    public ResponseEntity<TenantAdminResponse> updateTenantAdmin(@PathVariable Long id, @Valid @RequestBody TenantAdminRequest tenantAdminRequest) {
         TenantAdminResponse response = organizationService.updateTenantAdmin(id, tenantAdminRequest);
         return ResponseEntity.ok().body(response);
     }

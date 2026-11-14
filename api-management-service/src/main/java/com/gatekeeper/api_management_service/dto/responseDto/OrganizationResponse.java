@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter 
 @AllArgsConstructor 
 public class OrganizationResponse {
-  private Integer id;
+  private Long id;
   private String name;
   private String slug;
   private OrganizationStatus status;

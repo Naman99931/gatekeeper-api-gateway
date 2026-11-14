@@ -54,7 +54,7 @@ public class AuthService {
 
             Instant issuedAt = Instant.now();
             String role = user.getRole().getName();
-            Integer organizationId = user.getOrganization() == null ? null : user.getOrganization().getId();
+            Long organizationId = user.getOrganization() == null ? null : user.getOrganization().getId();
 
             JwtClaimsSet.Builder claims = JwtClaimsSet.builder()
                                     .issuer("self")

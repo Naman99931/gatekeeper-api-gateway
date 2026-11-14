@@ -10,5 +10,5 @@ public class LoginResponseDto {
     private String tokenType;
     private long expiresIn;
     private String role;
-    private Integer organizationId;
+    private Long organizationId;
 }
