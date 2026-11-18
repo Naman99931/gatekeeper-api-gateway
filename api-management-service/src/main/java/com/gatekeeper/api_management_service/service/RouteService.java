@@ -22,6 +22,7 @@ import com.gatekeeper.api_management_service.dto.responseDto.RouteVersionRespons
 import com.gatekeeper.api_management_service.entity.ApiRoutes;
 import com.gatekeeper.api_management_service.entity.ControlPlaneAuditRecords;
 import com.gatekeeper.api_management_service.entity.Organization;
+import com.gatekeeper.api_management_service.entity.OrganizationStatus;
 import com.gatekeeper.api_management_service.entity.RouteConfigurationVersion;
 import com.gatekeeper.api_management_service.entity.RouteHeaderRule;
 import com.gatekeeper.api_management_service.exception.ApiException;
@@ -178,6 +179,11 @@ public class RouteService {
           response.add(AuditRecordResponse.from(record));
       }
       return response;
+  }
+
+  @Transactional(readOnly = true)
+  public List<RouteResponse> findAllActiveForGateway() {
+      return toResponses(apiRouteRepository.findAllByActiveTrueAndOrganizationStatus(OrganizationStatus.ACTIVE));
   }
 
   private ApiRoutes getOwnedRoute(Long id, Long organizationId) {
