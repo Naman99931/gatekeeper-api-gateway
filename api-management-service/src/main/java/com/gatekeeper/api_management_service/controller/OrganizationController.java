@@ -49,8 +49,8 @@ public class OrganizationController {
     }
 
     @PatchMapping ("/{id}/status")
-    public ResponseEntity<OrganizationResponse> updateOrganizationStatus(@PathVariable Long id, @Valid @RequestBody OrganizationRequest organizationRequest) {
-        return ResponseEntity.ok(organizationService.updateOrganizationStatus(id, organizationRequest));
+    public ResponseEntity<OrganizationResponse> updateOrganizationStatus(@PathVariable Long id, @Valid @RequestBody com.gatekeeper.api_management_service.dto.requestDto.OrganizationStatusRequest statusRequest) {
+        return ResponseEntity.ok(organizationService.updateOrganizationStatus(id, statusRequest));
     }
 
     @DeleteMapping ("/{id}")

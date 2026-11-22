@@ -88,7 +88,7 @@ public class OrganizationService {
     }
 
     @Transactional
-    public OrganizationResponse updateOrganizationStatus(Long id, OrganizationRequest organizationRequest) {
+    public OrganizationResponse updateOrganizationStatus(Long id, com.gatekeeper.api_management_service.dto.requestDto.OrganizationStatusRequest request) {
         Organization organization = getOrganization(id);
         if (organization == null) {
             return null;
@@ -98,7 +98,7 @@ public class OrganizationService {
             return null;
         }
 
-        organization.setStatus(organization.getStatus());
+        organization.setStatus(request.getStatus());
         organization.setUpdatedAt(LocalDateTime.now());
         organizationRepository.save(organization);
         return OrganizationResponse.fromEntity(organization);
