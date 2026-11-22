@@ -71,6 +71,12 @@ public class OrganizationController {
         TenantAdminResponse response = organizationService.getTenantAdmin(id);
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/{id}/tenant")
+    public ResponseEntity<TenantAdminResponse> getTenantAdminByOrganization(@PathVariable Long id) {
+        TenantAdminResponse response = organizationService.getTenantAdminByOrganizationId(id);
+        return ResponseEntity.ok().body(response);
+    }
     
     @PutMapping("/updateTenant/{id}")
     public ResponseEntity<TenantAdminResponse> updateTenantAdmin(@PathVariable Long id, @Valid @RequestBody TenantAdminRequest tenantAdminRequest) {

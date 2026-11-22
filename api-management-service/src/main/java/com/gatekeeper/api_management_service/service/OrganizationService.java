@@ -148,6 +148,12 @@ public class OrganizationService {
     }
 
     @Transactional(readOnly = true)
+    public TenantAdminResponse getTenantAdminByOrganizationId(Long organizationId) {
+        ManagementUser tenantAdmin = getTenantAdminEntity(organizationId);
+        return TenantAdminResponse.fromEntity(tenantAdmin);
+    }
+
+    @Transactional(readOnly = true)
     public TenantAdminResponse getTenantAdmin(Long tenantAdminId) {
         ManagementUser tenantAdmin = managementUserRepository.findById(tenantAdminId)
                 .orElseThrow(() -> new ApiException("Tenant administrator not found for the given ID"));
