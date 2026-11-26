@@ -23,7 +23,7 @@ public class RouteResponse {
   private String targetPathPrefix;
   private Integer requestsPerMinute;
   private Integer responseTimeoutMs;
-  private boolean isIdempotencyEnabled;
+  private boolean idempotencyEnabled;
   private boolean active;
   private Long configurationVersion;
   private Set<String> allowedMethods;

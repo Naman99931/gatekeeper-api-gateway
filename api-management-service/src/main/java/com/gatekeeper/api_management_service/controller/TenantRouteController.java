@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -44,7 +43,7 @@ public class TenantRouteController {
   }
   
   @GetMapping("/routes/{id}")
-  public ResponseEntity<RouteResponse> findById(@RequestParam("id") Long id) {
+  public ResponseEntity<RouteResponse> findById(@PathVariable("id") Long id) {
       return ResponseEntity.ok(routeService.findById(id));
   }
 
